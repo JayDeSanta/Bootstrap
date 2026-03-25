@@ -3,214 +3,296 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FLAMES Love Calculator 🔥❤️</title>
+<title>FLAMES ❤️🔥</title>
 
 <style>
-body {
-    margin: 0;
-    height: 100vh;
-    overflow: hidden;
-    font-family: 'Segoe UI', sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+
+/* RESET */
+html, body {
+    margin:0;
+    padding:0;
+    height:100%;
+    overflow:hidden;
+    font-family:sans-serif;
+    background: radial-gradient(circle, #1a0000, #000);
 }
 
-/* 🔥 FIRE BACKGROUND */
-.fire {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle at 50% 100%, #ff512f, #000);
-    overflow: hidden;
-    z-index: -1;
+/* INTRO */
+#intro {
+    position:fixed;
+    width:100%;
+    height:100%;
+    background:black;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    z-index:999;
+}
+#typingText {
+    color:#ff4d6d;
+    font-size:26px;
+    border-right:3px solid #ff4d6d;
+    animation: blink 0.7s infinite;
+}
+@keyframes blink {50%{border-color:transparent;}}
+
+/* EMOJI BACKGROUND */
+#loveBg {
+    position:fixed;
+    width:100%;
+    height:100%;
+    z-index:-1;
+    overflow:hidden;
 }
 
-.flame {
-    position: absolute;
-    bottom: -50px;
-    width: 20px;
-    height: 80px;
-    background: linear-gradient(to top, #ff512f, #ffb347, transparent);
-    border-radius: 50%;
-    animation: rise 3s infinite ease-in;
-    filter: blur(2px);
-    opacity: 0.7;
+/* FLOAT */
+.float {
+    position:absolute;
+    animation: floatUp linear infinite;
+}
+@keyframes floatUp {
+    0% {transform:translateY(100vh); opacity:0;}
+    20% {opacity:1;}
+    100% {transform:translateY(-10vh); opacity:0;}
 }
 
-@keyframes rise {
-    0% {
-        transform: translateY(0) scale(1);
-        opacity: 0.8;
-    }
-    100% {
-        transform: translateY(-100vh) scale(0.5);
-        opacity: 0;
-    }
+/* RUN */
+.run {
+    position:absolute;
+    left:-50px;
+    animation: runAcross linear infinite;
+}
+@keyframes runAcross {
+    0% {transform:translateX(0); opacity:0;}
+    20% {opacity:1;}
+    100% {transform:translateX(110vw); opacity:0;}
 }
 
-/* 💖 UI */
+/* APP */
 .container {
-    background: rgba(255,255,255,0.15);
-    padding: 30px;
-    border-radius: 20px;
-    text-align: center;
-    backdrop-filter: blur(15px);
-    box-shadow: 0 10px 40px rgba(0,0,0,0.4);
-    width: 320px;
+    position:relative;
+    z-index:2;
+    width:320px;
+    margin:auto;
+    margin-top:80px;
+    padding:25px;
+    border-radius:20px;
+    text-align:center;
+    background:rgba(255,255,255,0.1);
+    backdrop-filter:blur(15px);
+    color:white;
 }
 
-h1 {
-    color: white;
-}
-
+/* INPUT */
 input {
-    width: 90%;
-    padding: 10px;
-    margin: 10px 0;
-    border-radius: 10px;
-    border: none;
-    outline: none;
+    width:90%;
+    padding:10px;
+    margin:10px;
+    border:none;
+    border-radius:10px;
 }
 
+/* BUTTON */
 button {
-    background: #ff2e63;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 20px;
-    cursor: pointer;
+    padding:10px 20px;
+    border:none;
+    border-radius:20px;
+    background:#ff2e63;
+    color:white;
+    cursor:pointer;
 }
 
-.result {
-    margin-top: 15px;
-    font-size: 20px;
-    color: white;
-    opacity: 0;
-    transform: scale(0.5);
-    transition: 0.5s;
-}
+/* RESULT */
+.result {opacity:0; transition:0.5s;}
+.show {opacity:1;}
 
-.show {
-    opacity: 1;
-    transform: scale(1);
+/* METER */
+.meter-label {
+    margin-top:15px;
+    animation: glow 2s infinite alternate;
 }
-
+@keyframes glow {
+    from {text-shadow:0 0 5px #ff4d6d;}
+    to {text-shadow:0 0 15px #ff1e4d;}
+}
 .meter {
-    margin-top: 20px;
-    width: 100%;
-    height: 15px;
-    background: rgba(255,255,255,0.3);
-    border-radius: 20px;
-    overflow: hidden;
+    height:10px;
+    background:rgba(255,255,255,0.3);
+    border-radius:10px;
 }
-
 .meter-fill {
-    height: 100%;
-    width: 0%;
-    background: linear-gradient(90deg, #ff2e63, #ff9a9e);
-    transition: 1s;
+    height:100%;
+    width:0%;
+    background:pink;
 }
 
-.percentage {
-    color: white;
-    margin-top: 10px;
+/* POPUP */
+.popup {
+    position:fixed;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.6);
+    display:none;
+    justify-content:center;
+    align-items:center;
+}
+.popup-content {
+    background:white;
+    padding:20px;
+    border-radius:15px;
 }
 
-/* ❤️ Heart */
-.heart {
-    font-size: 30px;
-    animation: beat 1s infinite;
-}
+.hidden {opacity:0;}
+.showApp {animation:fadeIn 1.5s forwards;}
+@keyframes fadeIn {to{opacity:1;}}
 
-@keyframes beat {
-    0%,100%{transform: scale(1);}
-    50%{transform: scale(1.2);}
-}
 </style>
-
 </head>
+
 <body>
 
-<div class="fire" id="fire"></div>
+<div id="intro">
+    <h1 id="typingText"></h1>
+</div>
 
+<div id="loveBg"></div>
+
+<div id="mainApp" class="hidden">
 <div class="container">
-    <h1> FLAMES ❤️</h1>
+<h2>🔥 FLAMES ❤️</h2>
 
-    <input type="text" id="name1" placeholder="Your Name">
-    <input type="text" id="name2" placeholder="Partner Name">
+<input id="name1" placeholder="Your Name">
+<input id="name2" placeholder="Partner Name">
 
-    <button onclick="calculateFlames()">Check Love</button>
+<button onclick="calculate()">Check Love</button>
 
-    <div id="result" class="result"></div>
+<div id="result" class="result"></div>
 
-    <div class="meter">
-        <div id="meterFill" class="meter-fill"></div>
-    </div>
+<div class="meter-label">💖 Love Meter 💖</div>
+<div class="meter">
+<div id="meterFill" class="meter-fill"></div>
+</div>
 
-    <div id="percentText" class="percentage"></div>
+<div id="percent"></div>
+</div>
+</div>
+
+<div id="popup" class="popup">
+<div class="popup-content">
+<h3>💖 Love Message</h3>
+<p id="popupText"></p>
+<button onclick="closePopup()">Close</button>
+</div>
 </div>
 
 <script>
-// 🔥 Generate flames dynamically
-function createFlames() {
-    const fire = document.getElementById("fire");
-    for (let i = 0; i < 40; i++) {
-        let flame = document.createElement("div");
-        flame.classList.add("flame");
 
-        flame.style.left = Math.random() * 100 + "vw";
-        flame.style.animationDuration = (2 + Math.random() * 2) + "s";
-        flame.style.width = (10 + Math.random() * 20) + "px";
-
-        fire.appendChild(flame);
-    }
+/* INTRO */
+let txt="Every Love Story Begins With A Name... ❤️";
+let i=0;
+function type(){
+    if(i<txt.length){
+        typingText.innerHTML+=txt[i++];
+        setTimeout(type,40);
+    } else setTimeout(startApp,1000);
 }
-createFlames();
-
-// 💖 FLAMES LOGIC
-function calculateFlames() {
-    let name1 = document.getElementById("name1").value.toLowerCase().replace(/\s/g,'');
-    let name2 = document.getElementById("name2").value.toLowerCase().replace(/\s/g,'');
-
-    if(name1 === "" || name2 === ""){
-        alert("Enter both names ❤️");
-        return;
-    }
-
-    let arr1 = name1.split('');
-    let arr2 = name2.split('');
-
-    for(let i=0;i<arr1.length;i++){
-        for(let j=0;j<arr2.length;j++){
-            if(arr1[i] === arr2[j]){
-                arr1[i] = '';
-                arr2[j] = '';
-                break;
-            }
-        }
-    }
-
-    let count = (arr1.join('') + arr2.join('')).length;
-
-    let flames = ["Friends 🤝","Love ❤️","Affection 💕","Marriage 💍","Enemies 😤","Siblings 👨‍👩‍👧"];
-
-    let index = 0;
-
-    while(flames.length > 1){
-        index = (index + count - 1) % flames.length;
-        flames.splice(index, 1);
-    }
-
-    let percentage = (name1.length * name2.length + count * 7) % 101;
-
-    let resultDiv = document.getElementById("result");
-    resultDiv.innerHTML = `<div class="heart">❤️</div> ${flames[0]}`;
-    resultDiv.classList.add("show");
-
-    document.getElementById("meterFill").style.width = percentage + "%";
-    document.getElementById("percentText").innerText = percentage + "% Love 💖";
+function startApp(){
+    intro.style.display="none";
+    mainApp.classList.remove("hidden");
+    mainApp.classList.add("showApp");
 }
+type();
+
+/* BACKGROUND */
+const loveBg=document.getElementById("loveBg");
+const emojis=["🌹","💖","💕","💘","❤️","💞","🌸"];
+
+/* FILL SCREEN INIT */
+for(let i=0;i<100;i++){
+    createFloat();
+    createRun();
+}
+
+/* CONTINUOUS */
+setInterval(createFloat,120);
+setInterval(createRun,180);
+
+function createFloat(){
+    let e=document.createElement("div");
+    e.className="float";
+    e.innerText=emojis[Math.floor(Math.random()*emojis.length)];
+
+    e.style.left=Math.random()*100+"vw";
+    e.style.fontSize=(20+Math.random()*30)+"px";
+
+    let d=6+Math.random()*5;
+    e.style.animationDuration=d+"s";
+
+    loveBg.appendChild(e);
+    setTimeout(()=>e.remove(),d*1000);
+}
+
+function createRun(){
+    let e=document.createElement("div");
+    e.className="run";
+    e.innerText=emojis[Math.floor(Math.random()*emojis.length)];
+
+    e.style.top=Math.random()*100+"vh";
+    e.style.fontSize=(18+Math.random()*25)+"px";
+
+    let d=6+Math.random()*6;
+    e.style.animationDuration=d+"s";
+
+    loveBg.appendChild(e);
+    setTimeout(()=>e.remove(),d*1000);
+}
+
+/* HEART BURST */
+document.onclick=(e)=>{
+    for(let i=0;i<6;i++){
+        let h=document.createElement("div");
+        h.innerText="💓";
+        h.style.position="fixed";
+        h.style.left=e.clientX+"px";
+        h.style.top=e.clientY+"px";
+        h.style.transition="1s";
+        document.body.appendChild(h);
+
+        setTimeout(()=>{
+            h.style.transform=`translate(${Math.random()*200-100}px,${Math.random()*200-100}px)`;
+            h.style.opacity=0;
+        },10);
+
+        setTimeout(()=>h.remove(),1000);
+    }
+};
+
+/* CALCULATE */
+function calculate(){
+    let a=name1.value.toLowerCase();
+    let b=name2.value.toLowerCase();
+
+    let res=["Friends 🤝","Love ❤️","Affection 💕","Marriage 💍","Enemies 😤","Siblings 👨‍👩‍👧"];
+    result.innerHTML=res[(a.length+b.length)%6];
+    result.classList.add("show");
+
+    let p=(a.length*b.length)%101;
+    meterFill.style.width=p+"%";
+    percent.innerText=p+"% Love 💖";
+
+    showPopup();
+}
+
+/* POPUP */
+let msgs=["Made for each other 💕","True love 💖","Perfect bond ❤️","Destiny ❤️"];
+function showPopup(){
+    popup.style.display="flex";
+    popupText.innerText=msgs[Math.floor(Math.random()*msgs.length)];
+}
+function closePopup(){
+    popup.style.display="none";
+}
+
 </script>
 
 </body>
