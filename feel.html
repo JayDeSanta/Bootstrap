@@ -1,0 +1,263 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Midnight Proposal</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    overflow:hidden;
+    height:100vh;
+    background:#050505;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    position:relative;
+}
+
+/* Background Glow */
+
+.glow{
+    position:absolute;
+    width:500px;
+    height:500px;
+    border-radius:50%;
+    background:radial-gradient(circle,#ff0055 0%,transparent 70%);
+    filter:blur(120px);
+    animation:pulse 4s infinite alternate;
+}
+
+@keyframes pulse{
+    from{
+        transform:scale(1);
+        opacity:.5;
+    }
+    to{
+        transform:scale(1.3);
+        opacity:1;
+    }
+}
+
+/* Falling Hearts */
+
+.heart{
+    position:absolute;
+    top:-10vh;
+    color:#ff2d75;
+    animation:fall linear infinite;
+    opacity:.8;
+}
+
+@keyframes fall{
+    to{
+        transform:translateY(120vh) rotate(360deg);
+    }
+}
+
+/* Main Card */
+
+.card{
+    position:relative;
+    z-index:2;
+    width:90%;
+    max-width:650px;
+    padding:60px;
+    border-radius:35px;
+
+    background:rgba(255,255,255,0.05);
+    border:1px solid rgba(255,255,255,0.08);
+
+    backdrop-filter:blur(20px);
+
+    box-shadow:
+    0 0 40px rgba(255,0,85,.25),
+    inset 0 0 20px rgba(255,255,255,.03);
+
+    text-align:center;
+
+    animation:float 5s ease-in-out infinite;
+}
+
+@keyframes float{
+    50%{
+        transform:translateY(-10px);
+    }
+}
+
+.small{
+    color:#ff4f88;
+    letter-spacing:4px;
+    font-size:.8rem;
+    margin-bottom:15px;
+}
+
+h1{
+    color:white;
+    font-size:4rem;
+    line-height:1.1;
+    margin-bottom:25px;
+}
+
+h1 span{
+    color:#ff2d75;
+    text-shadow:0 0 25px #ff2d75;
+}
+
+p{
+    color:#d6d6d6;
+    font-size:1.1rem;
+    line-height:1.9;
+    margin-bottom:40px;
+}
+
+/* Button */
+
+button{
+    border:none;
+    outline:none;
+    padding:18px 45px;
+    border-radius:60px;
+
+    background:linear-gradient(45deg,#ff0055,#ff4d88);
+
+    color:white;
+    font-size:1rem;
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.4s;
+
+    box-shadow:0 0 30px rgba(255,0,85,.6);
+}
+
+button:hover{
+    transform:scale(1.08);
+    box-shadow:0 0 60px rgba(255,0,85,1);
+}
+
+/* Hidden Message */
+
+#love{
+    margin-top:35px;
+    color:white;
+    font-size:2rem;
+    opacity:0;
+    transform:translateY(20px);
+    transition:1s;
+}
+
+/* Big Explosion Heart */
+
+.blast{
+    position:absolute;
+    font-size:10rem;
+    opacity:0;
+    pointer-events:none;
+}
+
+@keyframes explode{
+    0%{
+        transform:translate(-50%,-50%) scale(0);
+        opacity:0;
+    }
+
+    40%{
+        opacity:1;
+    }
+
+    100%{
+        transform:translate(-50%,-50%) scale(2.5);
+        opacity:0;
+    }
+}
+
+</style>
+</head>
+<body>
+
+<div class="glow"></div>
+
+<div class="card">
+
+    <div class="small">FOR SOMEONE SPECIAL</div>
+
+    <h1>You stole my <span>heart</span></h1>
+
+    <p>
+        Every notification feels exciting when it’s from you.  
+        Every moment feels softer around you.  
+        Maybe it’s crazy… but my heart chose you already ❤️
+    </p>
+
+    <button onclick="loveBurst()">
+        Touch My Heart ✨
+    </button>
+
+    <div id="love">
+        You unlocked my feelings ❤️
+    </div>
+
+</div>
+
+<div class="blast" id="blast">❤️</div>
+
+<script>
+
+/* Falling Hearts */
+
+for(let i=0;i<60;i++){
+
+    let heart=document.createElement("div");
+
+    heart.classList.add("heart");
+
+    heart.innerHTML="❤";
+
+    heart.style.left=Math.random()*100+"vw";
+
+    heart.style.fontSize=
+    (10+Math.random()*30)+"px";
+
+    heart.style.animationDuration=
+    (3+Math.random()*6)+"s";
+
+    document.body.appendChild(heart);
+}
+
+/* Button Effect */
+
+function loveBurst(){
+
+    document.getElementById("love").style.opacity="1";
+
+    document.getElementById("love").style.transform=
+    "translateY(0px)";
+
+    let blast=document.getElementById("blast");
+
+    blast.style.left="50%";
+    blast.style.top="50%";
+
+    blast.style.animation="explode 2s ease forwards";
+
+    setTimeout(()=>{
+        blast.style.animation="none";
+    },2000);
+}
+
+</script>
+
+</body>
+</html>
