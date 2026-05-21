@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Will You?</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #ffe5ec, #ffc2d1);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Container Card */
+        .card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            z-index: 10;
+            transition: all 0.5s ease;
+        }
+
+        h1 {
+            color: #ff477e;
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
+        }
+
+        p {
+            color: #4a4a4a;
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        /* Buttons */
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            height: 50px;
+            position: relative;
+        }
+
+        .btn {
+            padding: 10px 30px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        #yesBtn {
+            background-color: #ff477e;
+            color: white;
+        }
+
+        #yesBtn:hover {
+            background-color: #ff5c8a;
+            transform: scale(1.1);
+        }
+
+        #noBtn {
+            background-color: #a3b18a;
+            color: white;
+            position: absolute;
+            left: 55%; /* Initial positioning */
+            /* Added smooth glide transition when it moves */
+            transition: left 0.15s ease, top 0.15s ease, transform 0.2s;
+        }
+
+        /* Falling Emoji Styles */
+        .emoji {
+            position: absolute;
+            top: -50px;
+            font-size: 1.5rem;
+            animation: fall linear forwards;
+            user-select: none;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(105vh) rotate(360deg);
+            }
+        }
+
+        /* Success State */
+        .celebrate h1 {
+            font-size: 3rem;
+            animation: pulse 1s infinite alternate;
+        }
+
+        @keyframes pulse {
+            from { transform: scale(1); }
+            to { transform: scale(1.05); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card" id="proposalCard">
+        <h1 id="heading">Will you be mine? 💖</h1>
+        <p id="message">Every moment spent with you feels like a beautiful dream. I want to share all my tomorrows with you. What do you say?</p>
+        
+        <div class="btn-container">
+            <button class="btn" id="yesBtn" onclick="acceptProposal()">Yes!</button>
+            <!-- Added ontouchstart to catch mobile taps instantly before they lock focus -->
+            <button class="btn" id="noBtn" onmouseover="moveNoButton(event)" ontouchstart="moveNoButton(event)" onclick="moveNoButton(event)">No</button>
+        </div>
+    </div>
+
+    <script>
+        // --- Falling Emojis Logic ---
+        const emojis = ['💖', '💝', '✨', '💍', '🌸', '🥰'];
+        
+        function createEmoji() {
+            const emoji = document.createElement('div');
+            emoji.classList.add('emoji');
+            
+            // Randomly select an emoji
+            emoji.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+            
+            // Random horizontal positioning and size
+            emoji.style.left = Math.random() * 100 + 'vw';
+            emoji.style.fontSize = Math.random() * (30 - 15) + 15 + 'px';
+            
+            // Random fall duration and delay
+            const duration = Math.random() * (6 - 3) + 3; 
+            emoji.style.animationDuration = duration + 's';
+            emoji.style.opacity = Math.random() * (1 - 0.5) + 0.5;
+
+            document.body.appendChild(emoji);
+
+            // Remove emoji after it finishes falling to keep DOM clean
+            setTimeout(() => {
+                emoji.remove();
+            }, duration * 1000);
+        }
+
+        // Keep generating emojis continuously
+        let emojiInterval = setInterval(createEmoji, 300);
+
+        // --- Runaway "No" Button Logic (Mobile & Desktop Patched) ---
+        function moveNoButton(event) {
+            // Prevent mobile device default tap/zoom selections from locking onto the button
+            if (event) {
+                event.preventDefault();
+            }
+
+            const noBtn = document.getElementById('noBtn');
+            
+            // Switch to fixed positioning cleanly
+            noBtn.style.position = 'fixed';
+            noBtn.style.margin = '0'; 
+            
+            // Safe padding thresholds so it doesn't clip past screen edges
+            const padding = 40;
+            const maxX = window.innerWidth - noBtn.offsetWidth - padding;
+            const maxY = window.innerHeight - noBtn.offsetHeight - padding;
+            
+            // Randomize coordinates safely within bounds
+            const randomX = Math.max(padding, Math.random() * maxX);
+            const randomY = Math.max(padding, Math.random() * maxY);
+            
+            noBtn.style.left = randomX + 'px';
+            noBtn.style.top = randomY + 'px';
+        }
+
+        // --- "Yes" Button Success Logic ---
+        function acceptProposal() {
+            const card = document.getElementById('proposalCard');
+            const heading = document.getElementById('heading');
+            const message = document.getElementById('message');
+            const btnContainer = document.querySelector('.btn-container');
+
+            // Update card content
+            card.classList.add('celebrate');
+            heading.innerText = "YAYYY! 🎉💕";
+            message.innerText = "You've made me the happiest person alive! I can't wait for our beautiful journey together.";
+            
+            // Hide the buttons
+            btnContainer.style.display = 'none';
+
+            // Make the emoji rain significantly heavier
+            clearInterval(emojiInterval);
+            emojiInterval = setInterval(createEmoji, 50); 
+        }
+    </script>
+</body>
+</html>
